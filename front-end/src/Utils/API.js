@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+const URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
 
 const websiteData = async () => {
   try {
