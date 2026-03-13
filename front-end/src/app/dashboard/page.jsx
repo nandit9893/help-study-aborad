@@ -158,7 +158,7 @@ const Dashboard = () => {
             }
           </div>
         </div>
-        <div className="flex flex-col gap-5 w-full h-full mb-20">
+        <div className="flex flex-col gap-5 w-full h-full mb-2`0">
           <button type="button" disabled={user?.loading} onClick={fetchPreviousOperation} className="flex gap-10 w-full items-center cursor-pointer">
             <p className="text-[30px] leading-10 text-black font-medium dark:text-gray-200">Previous Operation</p>
             <div className="w-6 h-6 flex items-center justify-center">

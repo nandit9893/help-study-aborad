@@ -1,15 +1,18 @@
 "use client";
+import { logoutSuccess } from "@/Redux/User/UserSlice";
 import { websiteData } from "@/Utils/API";
-import { getInitials } from "@/Utils/Helper";
-import { Moon, SunDim } from "lucide-react";
+import { LogOut, Moon, SunDim } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [websiteResponse, setWebsiteResponse] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
@@ -29,6 +32,11 @@ const Header = () => {
     }
   }, [darkMode]);
 
+  const logout = () => {
+    dispatch(logoutSuccess());
+    router.push("/");
+  };
+
   useEffect(() => {
     const websiteDataResponse = async () => {
       const response = await websiteData();
@@ -46,28 +54,27 @@ const Header = () => {
     <div className="w-full px-5 md:px-20 flex justify-between items-center py-1 bg-[#f5e6d3] dark:bg-[#050A24] border-b border-gray-300 dark:border-gray-700 shadow-2xl">
       <div className="w-32">
         {
-            websiteResponse?.logo && websiteResponse?.logo?.trim() !== "" && (
-                <Image src={websiteResponse?.logo} alt={websiteResponse?.title} width={250} height={250} className="w-full" priority quality={100} unoptimized={true} />
-            )
+          websiteResponse?.logo && websiteResponse?.logo?.trim() !== "" && (
+            <Image src={websiteResponse?.logo} alt={websiteResponse?.title} width={250} height={250} className="w-full" priority quality={100} unoptimized={true} />
+          )
         }
       </div>
-
       <div className="flex gap-5 items-center">
         <button disabled={user?.loading} type="button" onClick={() => setDarkMode(!darkMode)} className="md:flex hidden items-center justify-center cursor-pointer">
           {
             darkMode ? 
             (
-               <SunDim className="w-5 h-5 text-[#EAB308] fill-current" />
+              <SunDim className="w-5 h-5 text-[#EAB308] fill-current" />
             ) 
             : 
             (
-               <Moon className="w-5 h-5 text-black fill-current" />
+              <Moon className="w-5 h-5 text-black fill-current" />
             )
           }
+        </button>0
+        <button disabled={user?.loading} type="button" onClick={logout} className="w-8 h-8 cursor-pointer flex items-center justify-center">
+          <LogOut className="w-full h-full text-black dark:text-white" />
         </button>
-        <div className="w-8 h-8 rounded-full flex items-center justify-center dark:border-gray-700 border border-gray-800">
-            <p className="text-[14px] leading-6 text-black dark:text-white font-medium">{getInitials(user?.currentUser?.firstName, user?.currentUser?.lastName)}</p>
-          </div>
       </div>
     </div>
   );
